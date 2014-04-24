@@ -5,9 +5,9 @@ var mine = require("mine");
 var pathJoin = require("pathjoin");
 var binary = require('bodec');
 var modes = require('js-git/lib/modes');
-module.exports = amdTree;
+module.exports = compiler;
 
-function amdTree(servePath, req, callback) {
+function compiler(servePath, req, callback) {
 
   var path = pathJoin(req.paths.root, req.input, req.paths.local);
   servePath(path, function (err, result) {
@@ -72,7 +72,6 @@ function amdTree(servePath, req, callback) {
   }
 }
 
-// This is regenerator built using browserify
 !function(e){if("object"==typeof exports)module.exports=e();else if("function"==typeof define&&define.amd)define(e);else{var f;"undefined"!=typeof window?f=window:"undefined"!=typeof global?f=global:"undefined"!=typeof self&&(f=self),f.regenerator=e()}}(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(_dereq_,module,exports){
 
 },{}],2:[function(_dereq_,module,exports){
@@ -445,7 +444,8 @@ module.exports = function isBuffer(arg) {
     && typeof arg.readUInt8 === 'function';
 }
 },{}],4:[function(_dereq_,module,exports){
-(function (process,global){// Copyright Joyent, Inc. and other Node contributors.
+(function (process,global){
+// Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the
@@ -1031,8 +1031,9 @@ exports._extend = function(origin, add) {
 function hasOwnProperty(obj, prop) {
   return Object.prototype.hasOwnProperty.call(obj, prop);
 }
-}).call(this,_dereq_("/home/admin/browserify-cdn/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./support/isBuffer":3,"/home/admin/browserify-cdn/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":6,"inherits":5}],5:[function(_dereq_,module,exports){
+
+}).call(this,_dereq_("/Users/benjamn/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"./support/isBuffer":3,"/Users/benjamn/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":6,"inherits":5}],5:[function(_dereq_,module,exports){
 if (typeof Object.create === 'function') {
   // implementation from standard node.js 'util' module
   module.exports = function inherits(ctor, superCtor) {
@@ -1113,7 +1114,8 @@ process.chdir = function (dir) {
 };
 
 },{}],7:[function(_dereq_,module,exports){
-(function (process){// Copyright Joyent, Inc. and other Node contributors.
+(function (process){
+// Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the
@@ -1337,12 +1339,13 @@ var substr = 'ab'.substr(-1) === 'b'
         return str.substr(start, len);
     }
 ;
-}).call(this,_dereq_("/home/admin/browserify-cdn/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"))
-},{"/home/admin/browserify-cdn/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":6}],8:[function(_dereq_,module,exports){
+
+}).call(this,_dereq_("/Users/benjamn/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"))
+},{"/Users/benjamn/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":6}],8:[function(_dereq_,module,exports){
 module.exports=_dereq_(3)
 },{}],9:[function(_dereq_,module,exports){
 module.exports=_dereq_(4)
-},{"./support/isBuffer":8,"/home/admin/browserify-cdn/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":6,"inherits":5}],10:[function(_dereq_,module,exports){
+},{"./support/isBuffer":8,"/Users/benjamn/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":6,"inherits":5}],10:[function(_dereq_,module,exports){
 /**
  * Copyright (c) 2014, Facebook, Inc.
  * All rights reserved.
@@ -3094,7 +3097,8 @@ function renameArguments(funcPath, argsId) {
 }
 
 },{"./emit":10,"./hoist":11,"assert":2,"recast":44}],16:[function(_dereq_,module,exports){
-(function (__dirname){/**
+(function (__dirname){
+/**
  * Copyright (c) 2014, Facebook, Inc.
  * All rights reserved.
  *
@@ -3253,6 +3257,7 @@ regenerator.runtime = runtime;
 
 // To transform a string of ES6 code, call require("regenerator")(source);
 module.exports = regenerator;
+
 }).call(this,"/")
 },{"./lib/util":14,"./lib/visit":15,"assert":2,"defs":17,"esprima":32,"fs":1,"path":7,"recast":44}],17:[function(_dereq_,module,exports){
 "use strict";
@@ -4690,8 +4695,8 @@ if (typeof module !== "undefined" && typeof module.exports !== "undefined") {
 }
 
 },{"assert":2,"stable":24}],24:[function(_dereq_,module,exports){
-//! stable.js 0.1.5, https://github.com/Two-Screen/stable
-//! Â© 2014 Angry Bytes and contributors. MIT licensed.
+//! stable.js 0.1.4, https://github.com/Two-Screen/stable
+//! © 2012 Stéphan Kochen, Angry Bytes. MIT licensed.
 
 (function() {
 
@@ -9452,6 +9457,7 @@ parseYieldExpression: true
         ClassBody: 'ClassBody',
         ClassDeclaration: 'ClassDeclaration',
         ClassExpression: 'ClassExpression',
+        ClassHeritage: 'ClassHeritage',
         ComprehensionBlock: 'ComprehensionBlock',
         ComprehensionExpression: 'ComprehensionExpression',
         ConditionalExpression: 'ConditionalExpression',
@@ -11179,8 +11185,7 @@ parseYieldExpression: true
             return {
                 type: Syntax.UnaryExpression,
                 operator: operator,
-                argument: argument,
-                prefix: true
+                argument: argument
             };
         },
 
@@ -15201,9 +15206,6 @@ Lp.bootstrapCharAt = function(pos) {
         line < strings.length)
         return "\n";
 
-    if (column >= string.length)
-        return "";
-
     return string.charAt(column);
 };
 
@@ -15227,13 +15229,9 @@ Lp.charAt = function(pos) {
         return " ";
 
     c += info.sliceStart - indent;
-
     if (c === info.sliceEnd &&
         line < this.length)
         return "\n";
-
-    if (c >= info.sliceEnd)
-        return "";
 
     return info.line.charAt(c);
 };
@@ -16245,11 +16243,7 @@ var getFieldValue = typesModule.getFieldValue;
 var Node = typesModule.namedTypes.Node;
 var util = _dereq_("./util");
 var comparePos = util.comparePos;
-var types = _dereq_("./types");
-var NodePath = types.NodePath;
-var isObject = types.builtInTypes.object;
-var isArray = types.builtInTypes.array;
-var isString = types.builtInTypes.string;
+var NodePath = _dereq_("ast-types").NodePath;
 
 function Patcher(lines) {
     assert.ok(this instanceof Patcher);
@@ -16259,7 +16253,7 @@ function Patcher(lines) {
         replacements = [];
 
     self.replace = function(loc, lines) {
-        if (isString.check(lines))
+        if (typeof lines === "string")
             lines = linesModule.fromString(lines);
 
         replacements.push({
@@ -16306,11 +16300,6 @@ exports.Patcher = Patcher;
 
 exports.getReprinter = function(path) {
     assert.ok(path instanceof NodePath);
-
-    // Make sure that this path refers specifically to a Node, rather than
-    // some non-Node subproperty of a Node.
-    if (path.node !== path.value)
-        return;
 
     var orig = path.node.original;
     var origLoc = orig && orig.loc;
@@ -16382,10 +16371,10 @@ function findAnyReprints(path, oldNode, reprints) {
     if (newNode === oldNode)
         return true;
 
-    if (isArray.check(newNode))
+    if (newNode instanceof Array)
         return findArrayReprints(path, oldNode, reprints);
 
-    if (isObject.check(newNode))
+    if (typeof newNode === "object")
         return findObjectReprints(path, oldNode, reprints);
 
     return false;
@@ -16393,10 +16382,10 @@ function findAnyReprints(path, oldNode, reprints) {
 
 function findArrayReprints(path, oldNode, reprints) {
     var newNode = path.value;
-    isArray.assert(newNode);
+    assert.ok(newNode instanceof Array);
     var len = newNode.length;
 
-    if (!(isArray.check(oldNode) &&
+    if (!(oldNode instanceof Array &&
           oldNode.length === len))
         return false;
 
@@ -16409,8 +16398,8 @@ function findArrayReprints(path, oldNode, reprints) {
 
 function findObjectReprints(path, oldNode, reprints) {
     var newNode = path.value;
-    isObject.assert(newNode);
-    if (!isObject.check(oldNode))
+    assert.strictEqual(typeof newNode, "object");
+    if (!newNode || !oldNode || typeof oldNode !== "object")
         return false;
 
     var childReprints = [];
@@ -16457,8 +16446,8 @@ function hasParens(oldNode) {
 
 function findChildReprints(path, oldNode, reprints) {
     var newNode = path.value;
-    isObject.assert(oldNode);
-    isObject.assert(newNode);
+    assert.strictEqual(typeof newNode, "object");
+    assert.strictEqual(typeof oldNode, "object");
 
     // If this node needs parentheses and will not be wrapped with
     // parentheses when reprinted, then return false to skip reprinting
@@ -16485,7 +16474,7 @@ function findChildReprints(path, oldNode, reprints) {
     return true;
 }
 
-},{"./lines":35,"./types":41,"./util":42,"assert":2}],40:[function(_dereq_,module,exports){
+},{"./lines":35,"./types":41,"./util":42,"assert":2,"ast-types":56}],40:[function(_dereq_,module,exports){
 var assert = _dereq_("assert");
 var sourceMap = _dereq_("source-map");
 var printComments = _dereq_("./comments").printComments;
@@ -17052,6 +17041,8 @@ function genericPrintNoParens(path, options, print) {
             parts.push(printed[0]);
         }
 
+        parts.push(";");
+
         return concat(parts);
 
     case "VariableDeclarator":
@@ -17513,7 +17504,7 @@ function nodeStr(n) {
 
 function maybeAddSemicolon(lines) {
     var eoc = lastNonSpaceCharacter(lines);
-    if (!eoc || "\n};".indexOf(eoc) < 0)
+    if (eoc && "\n};".indexOf(eoc) < 0)
         return concat([lines, ";"]);
     return lines;
 }
@@ -17795,7 +17786,8 @@ var Visitor = exports.Visitor = Class.extend({
 });
 
 },{"./types":41,"assert":2,"cls":57}],44:[function(_dereq_,module,exports){
-(function (process){var types = _dereq_("./lib/types");
+(function (process){
+var types = _dereq_("./lib/types");
 var parse = _dereq_("./lib/parser").parse;
 var Printer = _dereq_("./lib/printer").Printer;
 
@@ -17904,8 +17896,9 @@ Object.defineProperties(exports, {
         value: _dereq_("./lib/visitor").Visitor
     }
 });
-}).call(this,_dereq_("/home/admin/browserify-cdn/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"))
-},{"./lib/parser":38,"./lib/printer":40,"./lib/types":41,"./lib/visitor":43,"/home/admin/browserify-cdn/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":6,"fs":1}],45:[function(_dereq_,module,exports){
+
+}).call(this,_dereq_("/Users/benjamn/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"))
+},{"./lib/parser":38,"./lib/printer":40,"./lib/types":41,"./lib/visitor":43,"/Users/benjamn/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":6,"fs":1}],45:[function(_dereq_,module,exports){
 var types = _dereq_("../lib/types");
 var Type = types.Type;
 var def = Type.def;
@@ -18362,7 +18355,6 @@ var def = types.Type.def;
 var or = types.Type.or;
 var builtin = types.builtInTypes;
 var isBoolean = builtin.boolean;
-var isObject = builtin.object;
 var isString = builtin.string;
 var defaults = _dereq_("../lib/shared").defaults;
 
@@ -18511,23 +18503,6 @@ def("ImportDeclaration")
     .field("specifiers", [def("ImportSpecifier")])
     .field("kind", or("named", "default"))
     .field("source", ModuleSpecifier);
-
-def("TaggedTemplateExpression")
-    .bases("Expression")
-    .field("tag", def("Expression"))
-    .field("quasi", def("TemplateLiteral"));
-
-def("TemplateLiteral")
-    .bases("Expression")
-    .build("quasis", "expressions")
-    .field("quasis", [def("TemplateElement")])
-    .field("expressions", [def("Expression")]);
-
-def("TemplateElement")
-    .bases("Node")
-    .build("value", "tail")
-    .field("value", {"cooked": isString, "raw": isString})
-    .field("tail", isBoolean);
 
 types.finalize();
 
@@ -18834,8 +18809,7 @@ NPp.needsParens = function() {
             || n.MemberExpression.check(parent)
             || n.ArrayExpression.check(parent)
             || n.Property.check(parent)
-            || n.ConditionalExpression.check(parent)
-            || n.AssignmentExpression.check(parent);
+            || n.ConditionalExpression.check(parent);
 
     if (n.YieldExpression.check(node))
         return isBinary(parent)
@@ -26003,7 +25977,8 @@ define(function (_dereq_, exports, module) {
 });
 
 },{"amdefine":68}],68:[function(_dereq_,module,exports){
-(function (process,__filename){/** vim: et:ts=4:sw=4:sts=4
+(function (process,__filename){
+/** vim: et:ts=4:sw=4:sts=4
  * @license amdefine 0.1.0 Copyright (c) 2011, The Dojo Foundation All Rights Reserved.
  * Available via the MIT or new BSD license.
  * see: http://github.com/jrburke/amdefine for details
@@ -26302,7 +26277,12 @@ function amdefine(module, requireFn) {
 }
 
 module.exports = amdefine;
-}).call(this,_dereq_("/home/admin/browserify-cdn/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"),"/node_modules/recast/node_modules/source-map/node_modules/amdefine/amdefine.js")
-},{"/home/admin/browserify-cdn/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":6,"path":7}]},{},[16])
+
+}).call(this,_dereq_("/Users/benjamn/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"),"/node_modules/recast/node_modules/source-map/node_modules/amdefine/amdefine.js")
+},{"/Users/benjamn/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":6,"path":7}]},{},[16])
 (16)
 });
+
+// Export the right thing.
+var regenerator = module.exports;
+module.exports = compiler;
