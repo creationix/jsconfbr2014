@@ -55,7 +55,10 @@ function compiler(servePath, req, callback) {
   function compile(path, blob, callback) {
     var prefix = pathJoin(req.paths.rule, "..", req.base || ".");
     var js = binary.toUnicode(blob);
-    js = regenerator(js); // Compile with regenerator
+    try {
+      js = regenerator(js); // Compile with regenerator
+    }
+    catch (err) {}
     var deps = mine(js);
     var length = deps.length;
     var paths = new Array(length);
