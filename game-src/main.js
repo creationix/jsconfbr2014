@@ -45,7 +45,7 @@ function createSpark(x, y, mx, my) {
   sprite.position.y = y + Math.random() * 10 - 5;
   sprite.anchor.x = 0.5;
   sprite.anchor.y = 0.5;
-  sprite.lifetime = 600;
+  sprite.lifetime = 1000;
   sprite.mx = mx;
   sprite.my = my;
   stage.addChild(sprite);
@@ -95,7 +95,9 @@ function tick() {
   });
   for (var i = sparks.length - 1; i >= 0; i--) {
     var spark = sparks[i];
-    spark.rotation += delta / 10;
+    spark.rotation += delta / 100;
+    spark.alpha = (1000 - spark.lifetime) / 1000;
+
     spark.x += spark.mx * delta;
     spark.y += spark.my * delta;
     spark.lifetime -= delta;
