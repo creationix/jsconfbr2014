@@ -1,0 +1,5 @@
+{
+  program: "compiler"
+  input: "../game-src"
+  base: "src"
+}

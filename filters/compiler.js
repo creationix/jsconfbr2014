@@ -8,8 +8,13 @@ var modes = require('js-git/lib/modes');
 module.exports = compiler;
 
 function compiler(servePath, req, callback) {
-
-  var path = pathJoin(req.paths.root, req.input, req.paths.local);
+  var path;
+  if (req.input[0] === ".") {
+    path = pathJoin(req.paths.rule, "..", req.input, req.paths.local);
+  }
+  else {
+    path = pathJoin(req.paths.root, req.input, req.paths.local);
+  }
   servePath(path, function (err, result) {
     if (err) return callback(err);
     if (!shouldHandle(path, result)) return callback();
