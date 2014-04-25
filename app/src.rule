@@ -1,5 +1,5 @@
 {
   program: "compiler"
-  input: "../game-src"
+  input: "../app-src"
   base: "src"
 }
