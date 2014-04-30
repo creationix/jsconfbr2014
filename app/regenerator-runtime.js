@@ -7,4 +7,397 @@
  * additional grant of patent rights can be found in the PATENTS file in
  * the same directory.
  */
-(function(t,r,e){function n(t,r,e){return new i(t,r||null,e||[])}function i(t,r,n){function i(n,i){if(l===f)throw new Error("Generator is already running");if(l===u)throw new Error("Generator has already finished");for(;;){var o=a.delegate;if(o){try{var c=o.generator[n](i);n="next",i=e}catch(y){a.delegate=null,n="throw",i=y;continue}if(!c.done)return l=h,c;a[o.resultName]=c.value,a.next=o.nextLoc,a.delegate=null}if("next"===n){if(l===s&&"undefined"!=typeof i)throw new TypeError("attempt to send "+JSON.stringify(i)+" to newborn generator");l===h?a.sent=i:delete a.sent}else if("throw"===n){if(l===s)throw l=u,i;a.dispatchException(i)&&(n="next",i=e)}l=f;try{var d=t.call(r,a);l=a.done?u:h;var c={value:d,done:a.done};if(d!==p)return c;a.delegate&&"next"===n&&(i=e)}catch(v){l=u;"next"===n?a.dispatchException(v):i=v}}}var o=this,a=new c(n),l=s;o.next=i.bind(o,"next"),o.throw=i.bind(o,"throw")}function o(t){var r={tryLoc:t[0]};1 in t&&(r.catchLoc=t[1]),2 in t&&(r.finallyLoc=t[2]),this.tryEntries.push(r)}function a(t,r){var e=t.completion||{};e.type=0===r?"normal":"return",delete e.arg,t.completion=e}function c(t){this.tryEntries=[{tryLoc:"root"}],t.forEach(o,this),this.reset()}var l=Object.prototype.hasOwnProperty;if(!t.wrapGenerator){t.wrapGenerator=n,"undefined"!=typeof exports&&(exports.wrapGenerator=n);var s="suspendedStart",h="suspendedYield",f="executing",u="completed",p={};n.mark=function(t){return t.constructor=r,t},"GeneratorFunction"!==r.name&&(r.name="GeneratorFunction"),n.isGeneratorFunction=function(t){var e=t&&t.constructor;return e?r.name===e.name:!1},i.prototype.toString=function(){return"[object Generator]"},c.prototype={constructor:c,reset:function(){this.prev=0,this.next=0,this.sent=e,this.done=!1,this.delegate=null,this.tryEntries.forEach(a);for(var t,r=0;l.call(this,t="t"+r)||20>r;++r)this[t]=null},stop:function(){this.done=!0;var t=this.tryEntries[0],r=t.completion;if("throw"===r.type)throw r.arg;return this.rval},keys:function(t){var r=[];for(var e in t)r.push(e);return r.reverse(),function n(){for(;r.length;){var e=r.pop();if(e in t)return n.value=e,n.done=!1,n}return n.done=!0,n}},dispatchException:function(t){function r(r,n){return o.type="throw",o.arg=t,e.next=r,!!n}if(this.done)throw t;for(var e=this,n=this.tryEntries.length-1;n>=0;--n){var i=this.tryEntries[n],o=i.completion;if("root"===i.tryLoc)return r("end");if(i.tryLoc<=this.prev){var a=l.call(i,"catchLoc"),c=l.call(i,"finallyLoc");if(a&&c){if(this.prev<i.catchLoc)return r(i.catchLoc,!0);if(this.prev<i.finallyLoc)return r(i.finallyLoc)}else if(a){if(this.prev<i.catchLoc)return r(i.catchLoc,!0)}else{if(!c)throw new Error("try statement without catch or finally");if(this.prev<i.finallyLoc)return r(i.finallyLoc)}}}},_findFinallyEntry:function(t){for(var r=this.tryEntries.length-1;r>=0;--r){var e=this.tryEntries[r];if(e.tryLoc<=this.prev&&l.call(e,"finallyLoc")&&(e.finallyLoc===t||this.prev<e.finallyLoc))return e}},abrupt:function(t,r){var e=this._findFinallyEntry(),n=e?e.completion:{};return n.type=t,n.arg=r,e?this.next=e.finallyLoc:this.complete(n),p},complete:function(t){if("throw"===t.type)throw t.arg;return"break"===t.type||"continue"===t.type?this.next=t.arg:"return"===t.type&&(this.rval=t.arg,this.next="end"),p},finish:function(t){var r=this._findFinallyEntry(t);return this.complete(r.completion)},"catch":function(t){for(var r=this.tryEntries.length-1;r>=0;--r){var e=this.tryEntries[r];if(e.tryLoc===t){var n=e.completion;if("throw"===n.type){var i=n.arg;a(e,r)}return i}}throw new Error("illegal catch attempt")},delegateYield:function(t,r,e){return this.delegate={generator:t,resultName:r,nextLoc:e},p}}}}).apply(this,Function("return [this, function GeneratorFunction(){}]")());
+
+(function(
+  // Reliable reference to the global object (i.e. window in browsers).
+  global,
+
+  // Dummy constructor that we use as the .constructor property for
+  // functions that return Generator objects.
+  GeneratorFunction,
+
+  // Undefined value, more compressible than void 0.
+  undefined
+) {
+  var hasOwn = Object.prototype.hasOwnProperty;
+
+  if (global.wrapGenerator) {
+    return;
+  }
+
+  function wrapGenerator(innerFn, self, tryList) {
+    return new Generator(innerFn, self || null, tryList || []);
+  }
+
+  global.wrapGenerator = wrapGenerator;
+  if (typeof exports !== "undefined") {
+    exports.wrapGenerator = wrapGenerator;
+  }
+
+  var GenStateSuspendedStart = "suspendedStart";
+  var GenStateSuspendedYield = "suspendedYield";
+  var GenStateExecuting = "executing";
+  var GenStateCompleted = "completed";
+
+  // Returning this object from the innerFn has the same effect as
+  // breaking out of the dispatch switch statement.
+  var ContinueSentinel = {};
+
+  wrapGenerator.mark = function(genFun) {
+    genFun.constructor = GeneratorFunction;
+    return genFun;
+  };
+
+  // Ensure isGeneratorFunction works when Function#name not supported.
+  if (GeneratorFunction.name !== "GeneratorFunction") {
+    GeneratorFunction.name = "GeneratorFunction";
+  }
+
+  wrapGenerator.isGeneratorFunction = function(genFun) {
+    var ctor = genFun && genFun.constructor;
+    return ctor ? GeneratorFunction.name === ctor.name : false;
+  };
+
+  function Generator(innerFn, self, tryList) {
+    var generator = this;
+    var context = new Context(tryList);
+    var state = GenStateSuspendedStart;
+
+    function invoke(method, arg) {
+      if (state === GenStateExecuting) {
+        throw new Error("Generator is already running");
+      }
+
+      if (state === GenStateCompleted) {
+        throw new Error("Generator has already finished");
+      }
+
+      while (true) {
+        var delegate = context.delegate;
+        if (delegate) {
+          try {
+            var info = delegate.generator[method](arg);
+
+            // Delegate generator ran and handled its own exceptions so
+            // regardless of what the method was, we continue as if it is
+            // "next" with an undefined arg.
+            method = "next";
+            arg = undefined;
+
+          } catch (uncaught) {
+            context.delegate = null;
+
+            // Like returning generator.throw(uncaught), but without the
+            // overhead of an extra function call.
+            method = "throw";
+            arg = uncaught;
+
+            continue;
+          }
+
+          if (info.done) {
+            context[delegate.resultName] = info.value;
+            context.next = delegate.nextLoc;
+          } else {
+            state = GenStateSuspendedYield;
+            return info;
+          }
+
+          context.delegate = null;
+        }
+
+        if (method === "next") {
+          if (state === GenStateSuspendedStart &&
+              typeof arg !== "undefined") {
+            // https://people.mozilla.org/~jorendorff/es6-draft.html#sec-generatorresume
+            throw new TypeError(
+              "attempt to send " + JSON.stringify(arg) + " to newborn generator"
+            );
+          }
+
+          if (state === GenStateSuspendedYield) {
+            context.sent = arg;
+          } else {
+            delete context.sent;
+          }
+
+        } else if (method === "throw") {
+          if (state === GenStateSuspendedStart) {
+            state = GenStateCompleted;
+            throw arg;
+          }
+
+          if (context.dispatchException(arg)) {
+            // If the dispatched exception was caught by a catch block,
+            // then let that catch block handle the exception normally.
+            method = "next";
+            arg = undefined;
+          }
+        }
+
+        state = GenStateExecuting;
+
+        try {
+          var value = innerFn.call(self, context);
+
+          // If an exception is thrown from innerFn, we leave state ===
+          // GenStateExecuting and loop back for another invocation.
+          state = context.done
+            ? GenStateCompleted
+            : GenStateSuspendedYield;
+
+          var info = {
+            value: value,
+            done: context.done
+          };
+
+          if (value === ContinueSentinel) {
+            if (context.delegate && method === "next") {
+              // Deliberately forget the last sent value so that we don't
+              // accidentally pass it on to the delegate.
+              arg = undefined;
+            }
+          } else {
+            return info;
+          }
+
+        } catch (thrown) {
+          state = GenStateCompleted;
+
+          if (method === "next") {
+            context.dispatchException(thrown);
+          } else {
+            arg = thrown;
+          }
+        }
+      }
+    }
+
+    generator.next = invoke.bind(generator, "next");
+    generator.throw = invoke.bind(generator, "throw");
+  }
+
+  Generator.prototype.toString = function() {
+    return "[object Generator]";
+  };
+
+  function pushTryEntry(triple) {
+    var entry = { tryLoc: triple[0] };
+
+    if (1 in triple) {
+      entry.catchLoc = triple[1];
+    }
+
+    if (2 in triple) {
+      entry.finallyLoc = triple[2];
+    }
+
+    this.tryEntries.push(entry);
+  }
+
+  function resetTryEntry(entry, i) {
+    var record = entry.completion || {};
+    record.type = i === 0 ? "normal" : "return";
+    delete record.arg;
+    entry.completion = record;
+  }
+
+  function Context(tryList) {
+    // The root entry object (effectively a try statement without a catch
+    // or a finally block) gives us a place to store values thrown from
+    // locations where there is no enclosing try statement.
+    this.tryEntries = [{ tryLoc: "root" }];
+    tryList.forEach(pushTryEntry, this);
+    this.reset();
+  }
+
+  Context.prototype = {
+    constructor: Context,
+
+    reset: function() {
+      this.prev = 0;
+      this.next = 0;
+      this.sent = undefined;
+      this.done = false;
+      this.delegate = null;
+
+      this.tryEntries.forEach(resetTryEntry);
+
+      // Pre-initialize at least 20 temporary variables to enable hidden
+      // class optimizations for simple generators.
+      for (var tempIndex = 0, tempName;
+           hasOwn.call(this, tempName = "t" + tempIndex) || tempIndex < 20;
+           ++tempIndex) {
+        this[tempName] = null;
+      }
+    },
+
+    stop: function() {
+      this.done = true;
+
+      var rootEntry = this.tryEntries[0];
+      var rootRecord = rootEntry.completion;
+      if (rootRecord.type === "throw") {
+        throw rootRecord.arg;
+      }
+
+      return this.rval;
+    },
+
+    keys: function(object) {
+      var keys = [];
+      for (var key in object) {
+        keys.push(key);
+      }
+      keys.reverse();
+
+      // Rather than returning an object with a next method, we keep
+      // things simple and return the next function itself.
+      return function next() {
+        while (keys.length) {
+          var key = keys.pop();
+          if (key in object) {
+            next.value = key;
+            next.done = false;
+            return next;
+          }
+        }
+
+        // To avoid creating an additional object, we just hang the .value
+        // and .done properties off the next function object itself. This
+        // also ensures that the minifier will not anonymize the function.
+        next.done = true;
+        return next;
+      };
+    },
+
+    dispatchException: function(exception) {
+      if (this.done) {
+        throw exception;
+      }
+
+      var context = this;
+      function handle(loc, caught) {
+        record.type = "throw";
+        record.arg = exception;
+        context.next = loc;
+        return !!caught;
+      }
+
+      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+        var entry = this.tryEntries[i];
+        var record = entry.completion;
+
+        if (entry.tryLoc === "root") {
+          // Exception thrown outside of any try block that could handle
+          // it, so set the completion value of the entire function to
+          // throw the exception.
+          return handle("end");
+        }
+
+        if (entry.tryLoc <= this.prev) {
+          var hasCatch = hasOwn.call(entry, "catchLoc");
+          var hasFinally = hasOwn.call(entry, "finallyLoc");
+
+          if (hasCatch && hasFinally) {
+            if (this.prev < entry.catchLoc) {
+              return handle(entry.catchLoc, true);
+            } else if (this.prev < entry.finallyLoc) {
+              return handle(entry.finallyLoc);
+            }
+
+          } else if (hasCatch) {
+            if (this.prev < entry.catchLoc) {
+              return handle(entry.catchLoc, true);
+            }
+
+          } else if (hasFinally) {
+            if (this.prev < entry.finallyLoc) {
+              return handle(entry.finallyLoc);
+            }
+
+          } else {
+            throw new Error("try statement without catch or finally");
+          }
+        }
+      }
+    },
+
+    _findFinallyEntry: function(finallyLoc) {
+      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+        var entry = this.tryEntries[i];
+        if (entry.tryLoc <= this.prev &&
+            hasOwn.call(entry, "finallyLoc") && (
+              entry.finallyLoc === finallyLoc ||
+              this.prev < entry.finallyLoc)) {
+          return entry;
+        }
+      }
+    },
+
+    abrupt: function(type, arg) {
+      var entry = this._findFinallyEntry();
+      var record = entry ? entry.completion : {};
+
+      record.type = type;
+      record.arg = arg;
+
+      if (entry) {
+        this.next = entry.finallyLoc;
+      } else {
+        this.complete(record);
+      }
+
+      return ContinueSentinel;
+    },
+
+    complete: function(record) {
+      if (record.type === "throw") {
+        throw record.arg;
+      }
+
+      if (record.type === "break" ||
+          record.type === "continue") {
+        this.next = record.arg;
+      } else if (record.type === "return") {
+        this.rval = record.arg;
+        this.next = "end";
+      }
+
+      return ContinueSentinel;
+    },
+
+    finish: function(finallyLoc) {
+      var entry = this._findFinallyEntry(finallyLoc);
+      return this.complete(entry.completion);
+    },
+
+    "catch": function(tryLoc) {
+      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+        var entry = this.tryEntries[i];
+        if (entry.tryLoc === tryLoc) {
+          var record = entry.completion;
+          if (record.type === "throw") {
+            var thrown = record.arg;
+            resetTryEntry(entry, i);
+          }
+          return thrown;
+        }
+      }
+
+      // The context.catch method must only be called with a location
+      // argument that corresponds to a known catch block.
+      throw new Error("illegal catch attempt");
+    },
+
+    delegateYield: function(generator, resultName, nextLoc) {
+      this.delegate = {
+        generator: generator,
+        resultName: resultName,
+        nextLoc: nextLoc
+      };
+
+      return ContinueSentinel;
+    }
+  };
+}).apply(this, [this, function GeneratorFunction(){}]);

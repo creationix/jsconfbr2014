@@ -1,3 +1,13 @@
 {
-
+  "name": "Test App",
+  "short_name": "Test",
+  "version": "0.0.0",
+  "manifest_version": 2,
+  "description": "A Test app created in Tedit using ES6 generators",
+  "offline_enabled": true,
+  "app": {
+    "background": {
+      "scripts": ["background.js"]
+    }
+  }
 }
