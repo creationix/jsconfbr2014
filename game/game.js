@@ -40,6 +40,8 @@ function onAssetsLoaded() {
 }
 
 function createSpark(x, y, mx, my) {
+  mx = mx || 0;
+  my = my || 0;
   var sprite = PIXI.Sprite.fromFrame("star");
   sprite.position.x = x + Math.random() * 10 - 5;
   sprite.position.y = y + Math.random() * 10 - 5;
