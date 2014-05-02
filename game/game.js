@@ -1,15 +1,14 @@
 /*global PIXI*/
 
-var loader = new PIXI.AssetLoader(["sprites/shapes.json"]);
-loader.onComplete = onAssetsLoaded;
-loader.load();
-
-
 var width = window.innerWidth;
 var height = window.innerHeight;
 
 // create a renderer instance.
 var renderer = PIXI.autoDetectRenderer(width, height);
+
+var loader = new PIXI.AssetLoader(["sprites/shapes.json"]);
+loader.onComplete = onAssetsLoaded;
+loader.load();
 
 // create an new instance of a pixi stage
 var stage = new PIXI.Stage(0);
@@ -54,13 +53,24 @@ function createSpark(x, y, mx, my) {
   sparks.push(sprite);
 }
 
+var firefox = false;
+window.addEventListener("gamepadconnected", function(e) {
+  console.log("Gamepad connected at index %d: %s. %d buttons, %d axes.",
+  e.gamepad.index, e.gamepad.id,
+  e.gamepad.buttons.length, e.gamepad.axes.length);
+  firefox = true;
+});
+
+navigator.getGamepads = navigator.getGamepads ||
+                        navigator.webkitGetGamepads;
+
 var before;
 function tick() {
   var now = Date.now();
   var delta = now - before;
   before = now;
 
-  var gamepads = navigator.webkitGetGamepads();
+  var gamepads = navigator.getGamepads();
 
   sprites.forEach(function (sprite, i) {
     var gamepad = gamepads[i];
@@ -68,6 +78,24 @@ function tick() {
       if (!sprite.visible) {
         sprite.visible = true;
         stage.addChild(sprite);
+      }
+      var l = gamepad.buttons.length;
+      var buttons = new Array(l);
+      for (var j = 0; j < l; j++) {
+        var button = gamepad.buttons[j];
+        if (typeof button === "number") {
+          buttons[j] = button;
+        }
+        else {
+          buttons[j] = button.pressed;
+        }
+      }
+      l = gamepad.axes.length;
+      var axes = new Array(l);
+      for (j = 0; j < l; j++) {
+        var axis = gamepad.axes[i];
+        if (firefox) axes[(j + 3) % l] = axis;
+        else axes[j] = axis;
       }
       sprite.x += gamepad.axes[0] * delta;
       sprite.y += gamepad.axes[1] * delta;
@@ -82,7 +110,7 @@ function tick() {
         if (sprite.rotation < angle) sprite.rotation += Math.min(angle - sprite.rotation, delta / 200);
         if (sprite.rotation > angle) sprite.rotation -= Math.min(sprite.rotation - angle, delta / 200);
       }
-      if (gamepad.buttons[11] || gamepad.buttons[0]) {
+      if (buttons[11] || buttons[0]) {
         angle = Math.atan(gamepad.axes[2] / gamepad.axes[3]);
         if (gamepad.axes[3] < 0) angle += Math.PI;
         createSpark(sprite.x, sprite.y, gamepad.axes[0] + gamepad.axes[2], gamepad.axes[1] + gamepad.axes[3]);
