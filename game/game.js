@@ -80,7 +80,7 @@ function tick() {
         if (sprite.rotation < angle) sprite.rotation += Math.min(angle - sprite.rotation, delta / 200);
         if (sprite.rotation > angle) sprite.rotation -= Math.min(sprite.rotation - angle, delta / 200);
       }
-      if (gamepad.buttons[11]) {
+      if (gamepad.buttons[11] || gamepad.buttons[0]) {
         angle = Math.atan(gamepad.axes[2] / gamepad.axes[3]);
         if (gamepad.axes[3] < 0) angle += Math.PI;
         createSpark(sprite.x, sprite.y, gamepad.axes[0] + gamepad.axes[2], gamepad.axes[1] + gamepad.axes[3]);
